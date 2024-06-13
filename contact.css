@@ -1,0 +1,134 @@
+body {
+    background-color: #FFA500; /* 밝은 오렌지색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+    animation: shake 0.5s infinite;
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.container {
+    background-color: #FFFFFF; /* 흰색 컨테이너 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 600px; /* 컨테이너의 높이 */
+    width: 800px;
+    overflow-y: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input[type="text"], select {
+    margin-right: 30px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+	margin-bottom: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: rgb(19, 183, 32);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+button:hover {
+    background-color: rgb(16, 150, 26);
+}
+
+form button[type="button"] {
+    width: 830px; 
+    border-radius: 20px;
+}
+
+.card-container { 
+	display: flex;
+	flex-wrap: wrap;
+	}
+	
+.card { 
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 15px;
+	margin: 15px;
+	width: calc(30% - 40px);
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s, box-shadow 0.3s;
+	background-image: linear-gradient(to bottom right, #ffffff, rgb(255, 217, 179));
+	animation: cardEntrance 0.5s ease-out forwards;
+}
+@keyframes cardEntrance {
+  0% {
+    transform: rotateY(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.card h3 { 
+	margin: 0 0 10px 0;
+	}
+.card p { 
+	margin: 5px 0; 
+	font-weight: 500;
+	}
+.card:hover {
+    transform: translateY(-10px); /* Lift the card slightly on hover */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: -15px;
+}
+
+.card-buttons button {
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    height:20%
+}
+.card-buttons button:hover {
+    background-color: rgb(204, 133, 0);
+}

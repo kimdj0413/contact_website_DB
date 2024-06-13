@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orange🍊</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #ffa500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        @keyframes pulse {
+		  0% { transform: scale(1); }
+		  50% { transform: scale(1.5); }
+		  100% { transform: scale(1); }
+		}
+		#title {
+		  color: white;
+		  font-size: 4em;
+		  font-weight: bold;
+		  text-align: center;
+		  animation: pulse 2s infinite;
+		  margin-top: 2%;
+		}
+        #score {
+			color: white;
+            position: absolute;
+            bottom: 120px;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        #basket {
+            position: absolute;
+            bottom: 100px;
+            width: 300px;
+            height: 300px;
+        }
+        .orange {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            cursor: grab;
+        }
+        .success {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 70px;
+            font-weight: bold;
+            color: green;
+            animation: growRotate 2s forwards;
+        }
+        @keyframes growRotate {
+            0% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+            100% { transform: translate(-50%, -50%) scale(5) rotate(360deg); }
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .orange {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            transition: transform 1s ease-in-out;
+        }
+        .basket {
+            position: absolute;
+            bottom: 0;
+        }
+        @keyframes shrinkAndRotate {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            100% {
+                transform: rotate(360deg) scale(0);
+            }
+        }
+        .success {
+            font-size: 2em;
+            text-align: center;
+            margin-top: 20px;
+        }
+        @keyframes growAndRotate {
+		  from {
+		    transform: scale(0) rotate(0deg);
+		  }
+		  to {
+		    transform: scale(6) rotate(360deg);
+		  }
+		}
+
+    </style>
+</head>
+<body>
+    <div id="title">Catch Orange!</div>
+    <div id="score">0/5</div>
+    <img id="basket" src="basket.png" alt="Basket" class="basket">
+    <script>
+        let score = 0;
+        const scoreDisplay = document.getElementById('score');
+        const basket = document.getElementById('basket');
+        const fallSpeed = 30;
+
+        function createOrange() {
+            const orange = document.createElement('img');
+            orange.src = 'orange.png';
+            orange.classList.add('orange');
+            orange.style.top = '0px';
+            orange.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+            document.body.appendChild(orange);
+
+            let fallingInterval = setInterval(() => {
+                orange.style.top = `${parseInt(orange.style.top) + fallSpeed}px`;
+                if (parseInt(orange.style.top) > window.innerHeight - 50) {
+                    clearInterval(fallingInterval);
+                    document.body.removeChild(orange);
+                    createRandomOrange();
+                }
+            }, 50);
+
+            orange.onmousedown = function(event) {
+                event.preventDefault();
+                clearInterval(fallingInterval);
+                let shiftX = event.clientX - orange.getBoundingClientRect().left;
+                let shiftY = event.clientY - orange.getBoundingClientRect().top;
+
+                function moveAt(pageX, pageY) {
+                    orange.style.left = pageX - shiftX + 'px';
+                    orange.style.top = pageY - shiftY + 'px';
+                }
+
+                function onMouseMove(event) {
+                    moveAt(event.pageX, event.pageY);
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+
+                orange.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    orange.onmouseup = null;
+
+                    const basketRect = basket.getBoundingClientRect();
+                    const orangeRect = orange.getBoundingClientRect();
+
+                    if (
+                        orangeRect.right > basketRect.left &&
+                        orangeRect.left < basketRect.right &&
+                        orangeRect.bottom > basketRect.top &&
+                        orangeRect.top < basketRect.bottom
+                    ) {
+                        orange.style.animation = 'shrinkAndRotate 1s forwards';
+                        setTimeout(() => {
+                            document.body.removeChild(orange);
+                            score++;
+                            scoreDisplay.textContent = `${score}/5`;
+
+                            if (score === 5) {
+							    const successImage = document.createElement('img');
+							    successImage.src = 'drinking.jpg';
+							    successImage.style.position = 'absolute';
+							    successImage.style.left = '50%';
+							    successImage.style.top = '50%';
+							    successImage.style.transform = 'translate(-50%, -50%)';
+							    successImage.style.width = '60px';
+    							successImage.style.height = '90px';
+							    successImage.classList.add('success');
+							    document.body.appendChild(successImage);
+							
+							    successImage.style.animation = 'growAndRotate 2s forwards';
+							
+							    setTimeout(() => {
+							        document.body.innerHTML = '';
+							        document.body.style.backgroundColor = '#f0f0f0';
+							    }, 2500);
+							    setTimeout(() => {
+							        window.location.href = '/jwbook/website/login';
+							    }, 3000);
+							} else {
+							    createRandomOrange();
+							}
+
+                        }, 1000);
+                    } else {
+                        createRandomOrange();
+                    }
+                };
+            };
+        }
+
+        function createRandomOrange() {
+            const randomDelay = Math.random() * 500;
+            setTimeout(createOrange, randomDelay);
+        }
+        createRandomOrange();
+        createRandomOrange();
+        createRandomOrange();
+        createRandomOrange();
+        createRandomOrange();
+    </script>
+</body>
+</html>
